@@ -1,0 +1,35 @@
+@if (categories.items) {
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Categories</h5>
+      <table class="table table-striped" id="tblGrid">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name Arabic</th>
+            <th scope="col">Name English</th>
+            <th scope="col">Description Arabic</th>
+            <th scope="col">Description English</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (category of categories.items; track $index) {
+            <tr>
+              <th scope="row">{{ $index + 1 }}</th>
+              <td>{{ category.nameAr }}</td>
+              <td>{{ category.nameEn }}</td>
+              <td>{{ category.descriptionAr }}</td>
+              <td>{{ category.descriptionEn }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+} @else {
+  <div class="card">
+    <div class="card-body" role="alert">
+      <p>No categories found.</p>
+    </div>
+  </div>
+}

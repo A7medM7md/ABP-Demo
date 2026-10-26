@@ -1,0 +1,62 @@
+<div class="card pt-3">
+  <form class="card-body" [formGroup]="searchForm">
+    <div class="row">
+      <h2>Products</h2>
+
+      <div class="form-group col-md-6">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="filter" formControlName="filter" />
+      </div>
+    </div>
+
+    <div class="row pt-1">
+      <div class="text-right">
+        <button type="submit" class="btn btn-primary" (click)="searchProducts()">Search</button>
+        <button type="button" class="btn btn-primary" (click)="addProduct()">Add Product</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+@if (products) {
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-striped" id="tblGrid">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name Arabic</th>
+            <th scope="col">Name English</th>
+            <th scope="col">Description Arabic</th>
+            <th scope="col">Description English</th>
+            <th scope="col">Category Name Arabic</th>
+            <th scope="col">Category Name English</th>
+            <th scope="col">Category Description Arabic</th>
+            <th scope="col">Category Description English</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of products; track $index) {
+            <tr>
+              <th scope="row">{{ $index + 1 }}</th>
+              <td>{{ product.nameAr }}</td>
+              <td>{{ product.nameEn }}</td>
+              <td>{{ product.descriptionAr }}</td>
+              <td>{{ product.descriptionEn }}</td>
+              <td>{{ product.categoryNameAr }}</td>
+              <td>{{ product.categoryNameEn }}</td>
+              <td>{{ product.categoryDescriptionAr }}</td>
+              <td>{{ product.categoryDescriptionEn }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+} @else {
+  <div class="card">
+    <div class="card-body" role="alert">
+      <p>No products found.</p>
+    </div>
+  </div>
+}
