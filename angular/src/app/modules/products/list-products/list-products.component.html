@@ -1,62 +1,190 @@
-<div class="card pt-3">
-  <form class="card-body" [formGroup]="searchForm">
-    <div class="row">
-      <h2>Products</h2>
+<div class="container-fluid py-4">
 
-      <div class="form-group col-md-6">
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="filter" formControlName="filter" />
+  <!-- Products Search Card -->
+  <div class="card border-0 shadow-sm rounded-3 mb-4">
+    <div class="card-body p-4">
+
+      <!-- Header -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+          <h2 class="h4 fw-bold mb-1">Products</h2>
+          <p class="text-muted mb-0">
+            Search and manage your products in one place.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-primary px-4"
+          (click)="addProduct()">
+          + Add Product
+        </button>
+      </div>
+
+      <hr class="text-muted opacity-25 mb-4" />
+
+      <!-- Search Form -->
+      <form [formGroup]="searchForm" (ngSubmit)="searchProducts()">
+        <div class="row g-3 align-items-end">
+
+          <div class="col-12 col-md-6 col-lg-5">
+            <label for="filter" class="form-label fw-semibold">
+              Product Name
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              id="filter"
+              formControlName="filter"
+              placeholder="Enter product name..."
+              aria-label="Search products by name" />
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-5">
+            <label for="categoryId" class="form-label fw-semibold">
+              Category
+            </label>
+
+            <select
+              class="form-control"
+              id="categoryId"
+              formControlName="categoryId"
+              aria-label="Select category">
+              <option value="">All Categories</option>
+               @for(category of categories; track $index) {
+                <option [value]="category.id">
+                  {{ category.nameEn }} ({{ category.nameAr }})
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="col-12 col-md-auto">
+            <button
+              type="submit"
+              class="btn btn-primary px-4 w-100">
+              Search
+            </button>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Products Table -->
+  @if (products && products.length > 0) {
+    <div class="card border-0 shadow-sm rounded-3">
+
+      <div class="card-header bg-white border-bottom px-4 py-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="h6 fw-bold mb-0">Product List</h3>
+
+          <span class="badge bg-light text-dark border">
+            {{ products.length }} products
+          </span>
+        </div>
+      </div>
+
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table
+            class="table table-hover align-middle mb-0"
+            id="tblGrid">
+
+            <thead class="table-light">
+              <tr>
+                <th scope="col" class="px-3 py-3 text-nowrap">#</th>
+                <th scope="col" class="py-3 text-nowrap">Name Arabic</th>
+                <th scope="col" class="py-3 text-nowrap">Name English</th>
+                <th scope="col" class="py-3 text-nowrap">Description Arabic</th>
+                <th scope="col" class="py-3 text-nowrap">Description English</th>
+                <th scope="col" class="py-3 text-nowrap">Category Name Arabic</th>
+                <th scope="col" class="py-3 text-nowrap">Category Name English</th>
+                <th scope="col" class="py-3 text-nowrap">Category Description Arabic</th>
+                <th scope="col" class="py-3 text-nowrap">Category Description English</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (product of products; track $index) {
+                <tr>
+                  <th scope="row" class="px-3 text-muted fw-normal">
+                    {{ $index + 1 }}
+                  </th>
+
+                  <td class="text-nowrap fw-medium">
+                    {{ product.nameAr }}
+                  </td>
+
+                  <td class="text-nowrap">
+                    {{ product.nameEn }}
+                  </td>
+
+                  <td>
+                    {{ product.descriptionAr || '—' }}
+                  </td>
+
+                  <td>
+                    {{ product.descriptionEn || '—' }}
+                  </td>
+
+                  <td class="text-nowrap">
+                    {{ product.categoryNameAr || '—' }}
+                  </td>
+
+                  <td class="text-nowrap">
+                    {{ product.categoryNameEn || '—' }}
+                  </td>
+
+                  <td>
+                    {{ product.categoryDescriptionAr || '—' }}
+                  </td>
+
+                  <td>
+                    {{ product.categoryDescriptionEn || '—' }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+
+    </div>
+  } @else {
+    <!-- Empty State -->
+    <div class="card border-0 shadow-sm rounded-3">
+      <div class="card-body text-center py-5 px-3">
+
+        <div class="mb-3">
+          <span
+            class="d-inline-flex align-items-center justify-content-center rounded-circle bg-light text-secondary"
+            style="width: 64px; height: 64px; font-size: 28px;"
+            aria-hidden="true">
+            &#128230;
+          </span>
+        </div>
+
+        <h3 class="h5 fw-bold mb-2">No products found</h3>
+
+        <p class="text-muted mb-4">
+          No products are available for the current search.
+          Try another name or add a new product.
+        </p>
+
+        <button
+          type="button"
+          class="btn btn-primary px-4"
+          (click)="addProduct()">
+          + Add Product
+        </button>
+
       </div>
     </div>
+  }
 
-    <div class="row pt-1">
-      <div class="text-right">
-        <button type="submit" class="btn btn-primary" (click)="searchProducts()">Search</button>
-        <button type="button" class="btn btn-primary" (click)="addProduct()">Add Product</button>
-      </div>
-    </div>
-  </form>
 </div>
-
-@if (products) {
-  <div class="card">
-    <div class="card-body">
-      <table class="table table-striped" id="tblGrid">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name Arabic</th>
-            <th scope="col">Name English</th>
-            <th scope="col">Description Arabic</th>
-            <th scope="col">Description English</th>
-            <th scope="col">Category Name Arabic</th>
-            <th scope="col">Category Name English</th>
-            <th scope="col">Category Description Arabic</th>
-            <th scope="col">Category Description English</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (product of products; track $index) {
-            <tr>
-              <th scope="row">{{ $index + 1 }}</th>
-              <td>{{ product.nameAr }}</td>
-              <td>{{ product.nameEn }}</td>
-              <td>{{ product.descriptionAr }}</td>
-              <td>{{ product.descriptionEn }}</td>
-              <td>{{ product.categoryNameAr }}</td>
-              <td>{{ product.categoryNameEn }}</td>
-              <td>{{ product.categoryDescriptionAr }}</td>
-              <td>{{ product.categoryDescriptionEn }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  </div>
-} @else {
-  <div class="card">
-    <div class="card-body" role="alert">
-      <p>No products found.</p>
-    </div>
-  </div>
-}

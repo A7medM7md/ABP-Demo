@@ -60,6 +60,7 @@ namespace ABP.Demo1.Products
                 .WhereIf(!input.Filter.IsNullOrWhiteSpace(),
                     p => p.NameAr.Contains(input.Filter) ||
                     p.NameEn.Contains(input.Filter))
+                .WhereIf(input.CategoryId.HasValue, p => p.CategoryId == input.CategoryId.Value)
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount)
                 // Use 'System.Linq.Dynamic.Core' namespace to remove error from OrderBy(), this allows OrderBy to take string, not lambda exp.

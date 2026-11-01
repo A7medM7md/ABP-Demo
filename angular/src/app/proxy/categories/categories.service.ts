@@ -1,15 +1,14 @@
 import type { AddOrEditCategoryDto, CategoryDto } from './models';
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoriesService {
   apiName = 'Default';
-
-  restService: RestService = inject(RestService);
+  
 
   create = (input: AddOrEditCategoryDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, CategoryDto>({
@@ -18,7 +17,7 @@ export class CategoriesService {
       body: input,
     },
     { apiName: this.apiName,...config });
-
+  
 
   delete = (id: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
@@ -26,7 +25,7 @@ export class CategoriesService {
       url: `/api/app/categories/${id}`,
     },
     { apiName: this.apiName,...config });
-
+  
 
   get = (id: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, CategoryDto>({
@@ -34,7 +33,7 @@ export class CategoriesService {
       url: `/api/app/categories/${id}`,
     },
     { apiName: this.apiName,...config });
-
+  
 
   getList = (input: PagedAndSortedResultRequestDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, PagedResultDto<CategoryDto>>({
@@ -43,7 +42,7 @@ export class CategoriesService {
       params: { sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
     },
     { apiName: this.apiName,...config });
-
+  
 
   update = (id: number, input: AddOrEditCategoryDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, CategoryDto>({
@@ -53,4 +52,5 @@ export class CategoriesService {
     },
     { apiName: this.apiName,...config });
 
+  constructor(private restService: RestService) {}
 }
